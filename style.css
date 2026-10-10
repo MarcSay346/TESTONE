@@ -1,0 +1,142 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fffefe;
+  color: #010000;
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar{
+  width: 250px;
+  background: #C8102E;
+  color: white;
+  padding: 30px 20px;
+  min-height: 100vh;
+}
+
+.sidebar h1{
+  font-size: 25px;
+  color: white;
+}
+
+.sidebar p{
+  color: white;
+  font-size: 13px;
+}
+
+nav{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+nav button{
+  background: transparent;
+  color: rgb(255, 255, 255);
+  border: none;
+  text-align: left;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+nav button:hover{
+  background: #e63f3f;
+}
+
+.content{
+  flex: 1;
+  padding: 45px;
+  max-width: 1100px;
+}
+
+h2{
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.card{
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-top: 22px;
+  box-shadow: 0 4px 16px #C8102E;
+}
+
+.card h3{
+  margin-top: 0;
+}
+
+.card button,
+#fits button{
+  background: #C8102E;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 9px;
+  margin: 6px 5px 6px 0;
+  cursor: pointer;
+}
+
+.card button:hover{
+  background: #e63f3f;
+}
+
+.hidden{
+  display: none;
+}
+
+input, select{
+  display: block;
+  margin: 15px 0;
+  padding: 10px;
+  max-width: 100%;
+}
+
+#preview{
+  max-width: 280px;
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.outfit-photo{
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+}
+
+@media (max-width: 700px){
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar{
+    width: 100%;
+    min-height: auto;
+    padding: 18px;
+  }
+
+  nav{
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  nav button{
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .content{
+    padding: 20px;
+  }
+}
