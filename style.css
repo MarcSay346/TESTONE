@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-body {
+body{
   margin: 0;
   font-family: "Poppins", sans-serif;
   background: #fffefe;
@@ -12,7 +12,7 @@ body {
   min-height: 100vh;
 }
 
-.sidebar {
+.sidebar{
   width: 250px;
   background: #C8102E;
   color: white;
@@ -20,7 +20,7 @@ body {
 }
 
 
-.sidebar h1 {
+.sidebar h1{
     font-size: 23px;
     color: white;
     text-align: center;
@@ -32,19 +32,19 @@ body {
     left: -10px;
 }
 
-.sidebar p {
+.sidebar p{
   color: white;
   font-size: 13px;
 }
 
-nav {
+nav{
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 40px;
 }
 
-nav button {
+nav button{
   background: transparent;
   color: rgb(255, 255, 255);
   border: none;
@@ -55,22 +55,22 @@ nav button {
   cursor: pointer;
 }
 
-nav button:hover {
+nav button:hover{
   background: #e63f3f;
 }
 
-.content {
+.content{
   flex: 1;
   padding: 35px;
   min-width: 0;
 }
 
-h2 {
+h2{
   font-size: 30px;
   margin-bottom: 8px;
 }
 
-.card {
+.card{
   background: white;
   padding: 24px;
   border-radius: 18px;
@@ -78,7 +78,7 @@ h2 {
   box-shadow: 0 5px 20px rgba(60, 30, 40, 0.08);
 }
 
-.card h3 {
+.card h3{
   margin-top: 0;
 }
 
@@ -141,18 +141,18 @@ select {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
-.website-name {
+.website-name{
   color: #C8102E;
   font-size: 24px;
   margin: 0;
 }
 
-.account-buttons {
+.account-buttons{
   display: flex;
   gap: 12px;
 }
 
-.login-btn {
+.login-btn{
   background: transparent;
   color: #C8102E;
   border: 2px solid #C8102E;
@@ -161,7 +161,7 @@ select {
   cursor: pointer;
 }
 
-.signup-btn {
+.signup-btn{
   background: #e63f3f;
   color: white;
   border: none;
@@ -927,4 +927,521 @@ page > h2:first-child{
     border-radius: 18px;
     color: #888;
     font-size: 14px;
+}
+
+
+/* =====================================================
+   EXTRAS for login, live data, and admin (added by Marc)
+   Everything above this line is the original design.
+   ===================================================== */
+
+/* login + admin inputs */
+.card input:not([type="file"]),
+.card select{
+    width: 100%;
+    max-width: 380px;
+    margin: 12px 0;
+    padding: 12px 14px;
+    font-size: 14px;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    background: white;
+}
+
+.card input:focus{
+    border-color: #C8102E;
+}
+
+#msg{
+    color: #C8102E;
+    font-weight: 600;
+    min-height: 1.2rem;
+}
+
+a{
+    color: #C8102E;
+}
+
+/* keep "Log In" text readable on hover */
+.login-btn:hover{
+    color: white;
+}
+
+/* top bar: logged-in name + admin tag */
+.topbar-user{
+    font-size: 14px;
+    font-weight: 500;
+    color: #888;
+    align-self: center;
+}
+
+.admin-badge{
+    align-self: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #C8102E;
+}
+
+/* circle activity rows */
+.feed-item{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 0;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+}
+
+.feed-item:last-child{
+    border-bottom: none;
+}
+
+.feed-item .feed-time{
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+/* extra status colors */
+.status.pending{
+    background: #fff3e0;
+    color: #9a5700;
+}
+
+.member-status.away{
+    background: #fff3e0;
+    color: #9a5700;
+}
+
+/* fit feed posts */
+.fit-post-head{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.card .report-btn,
+#fits .report-btn{
+    background: white;
+    color: #666;
+    border: 1px solid #DDD;
+    font-size: 12px;
+    padding: 7px 14px;
+    margin-top: 12px;
+}
+
+.card .report-btn:hover,
+#fits .report-btn:hover{
+    background: #F1F1F1;
+}
+
+/* admin: stat tiles */
+.stats{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.stats .card{
+    margin-top: 0;
+    text-align: center;
+}
+
+.stats .num{
+    font-size: 34px;
+    font-weight: 700;
+    color: #C8102E;
+    margin: 0;
+}
+
+.stats .label{
+    margin: 4px 0 0;
+    color: #888;
+    font-size: 14px;
+}
+
+/* admin: attendance table */
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td{
+    text-align: left;
+    padding: 14px 10px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+}
+
+th{
+    color: #888;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.bar{
+    display: inline-block;
+    vertical-align: middle;
+    width: 120px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 6px;
+    background: #F1F1F1;
+}
+
+.bar span{
+    display: block;
+    height: 100%;
+    border-radius: 6px;
+    background: #C8102E;
+}
+
+/* admin: reports */
+.report{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.report:last-child{
+    border-bottom: none;
+}
+
+.report img{
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #F1F1F1;
+}
+
+.report .info{
+    flex: 1;
+    min-width: 170px;
+}
+
+.report .info p{
+    margin: 3px 0;
+}
+
+.reason{
+    color: #C8102E;
+    font-weight: 600;
+}
+
+.muted{
+    color: #888;
+    font-size: 13px;
+}
+
+.card .secondary{
+    background: white;
+    color: #666;
+    border: 1px solid #DDD;
+}
+
+.card .secondary:hover{
+    background: #F1F1F1;
+}
+
+/* fit check: caption box + Campus Hub / Close Friends tabs */
+#fits #caption{
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 20px;
+}
+
+#fits .tabs{
+    display: flex;
+    gap: 10px;
+    margin: 35px 0 6px;
+}
+
+#fits .tab{
+    background: white;
+    color: #666;
+    border: 1px solid #DDD;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+
+#fits .tab:hover{
+    background: #F1F1F1;
+}
+
+#fits .tab.active{
+    background: #C8102E;
+    color: white;
+    border-color: #C8102E;
+}
+
+#fitMsg{
+    margin: 10px 0 0;
+}
+
+/* fit ratings: 1-10 score buttons + average */
+#fits .rating{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #EEEEEE;
+}
+
+#fits .rating-label{
+    font-size: 13px;
+    color: #666;
+}
+
+#fits .score-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#fits .score{
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    background: white;
+    color: #666;
+    border: 1px solid #DDD;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#fits .score:hover{
+    background: #FCE8EC;
+    color: #C8102E;
+    border-color: #C8102E;
+}
+
+#fits .score.on{
+    background: #C8102E;
+    color: white;
+    border-color: #C8102E;
+}
+
+#fits .rating-avg{
+    font-size: 13px;
+    color: #888;
+}
+
+#fits .rating-avg b{
+    color: #C8102E;
+}
+
+/* report button + reason box on every fit */
+#fits .report-btn.reported{
+    color: #287A43;
+    border-color: #CDE8D6;
+    background: #E6F4EA;
+    cursor: default;
+}
+
+#fits .report-box{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 12px;
+    background: #FAFAFC;
+    border: 1px solid #EEEEF0;
+    border-radius: 12px;
+}
+
+#fits .report-box.hidden{
+    display: none;
+}
+
+#fits .report-box select{
+    margin: 0;
+    padding: 9px 12px;
+    border: 1px solid #DDD;
+    border-radius: 9px;
+    background: white;
+    font-size: 13px;
+}
+
+#fits .report-box button{
+    margin: 0;
+    font-size: 13px;
+    padding: 9px 14px;
+}
+
+#fits .report-box .report-cancel{
+    background: white;
+    color: #666;
+    border: 1px solid #DDD;
+}
+
+/* schedule: remove button sits on the right */
+.schedule-actions .remove-btn{
+    margin-left: auto;
+}
+
+/* circle calendar: month grid like a paper calendar */
+.cal-header{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cal-header h3{
+    margin: 0;
+}
+
+.cal-nav{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cal-nav span{
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 150px;
+    text-align: center;
+}
+
+.card .cal-nav button{
+    margin: 0;
+    padding: 7px 13px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.card .cal-nav button:disabled{
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.cal-legend{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.cal-person{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #555;
+}
+
+.cal-dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+/* lets the month scroll sideways on phones instead of squishing */
+.cal-scroll{
+    overflow-x: auto;
+}
+
+.cal-month{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    min-width: 700px;
+    border-top: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+}
+
+.cal-head{
+    background: #C8102E;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 8px 4px;
+    border-right: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.cal-cell{
+    min-height: 105px;
+    padding: 6px;
+    background: white;
+    border-right: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.cal-cell.weekend{
+    background: #F3F3F5;
+}
+
+.cal-cell.other-month{
+    background: #FAFAFB;
+}
+
+.cal-cell.other-month .cal-num,
+.cal-cell.other-month .cal-event{
+    opacity: 0.4;
+}
+
+.cal-num{
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    align-self: flex-start;
+    margin-bottom: 2px;
+}
+
+.cal-cell.today .cal-num{
+    background: #C8102E;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cal-event{
+    background: white;
+    border: 1px solid #EEEEEE;
+    border-left: 4px solid #C8102E;
+    border-radius: 6px;
+    padding: 3px 5px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cal-time{
+    color: #888;
+    font-weight: 500;
+}
+
+.cal-more{
+    font-size: 11px;
+    color: #C8102E;
+    font-weight: 600;
+    cursor: default;
 }

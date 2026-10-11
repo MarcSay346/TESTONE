@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoogScene - My Schedule</title>
+  <script>
+    if (!localStorage.getItem("accountId")) location.href = "/login.html";
+  </script>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* date + time + AM/PM on one row */
+    .when-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .card .when-row input,
+    .card .when-row select{
+      width: auto;
+      margin: 0;
+    }
+    .card .when-row #schedDate{ width: 150px; }
+    .card .when-row #schedClock{ width: 100px; }
+    .card .when-row #schedAmPm{ width: 90px; }
+    .when-label{
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin: 14px 0 6px;
+    }
+    #schedMsg.error{ color: #C8102E; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+      <div class="header-brand">
+          <img src="images/logo.png" alt="CoogScene Logo" class="header-logo" onerror="this.style.display='none'">
+          <div class="header-brand-text">
+              <h2>CoogScene</h2>
+              <p>Your campus. Your circle.</p>
+          </div>
+      </div>
+
+      <div class="account-buttons">
+          <span class="topbar-user" id="topUser"></span>
+          <button class="login-btn" onclick="logout()">Log Out</button>
+      </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1>My Scene</h1>
+      <nav>
+          <button onclick="location.href='/alex.html'">
+              <i data-lucide="house"></i>
+              <span>Home</span>
+          </button>
+          <button class="active">
+              <i data-lucide="calendar-days"></i>
+              <span>Schedule</span>
+          </button>
+          <button onclick="location.href='/alex.html#fits'">
+              <i data-lucide="shirt"></i>
+              <span>Fit Check</span>
+          </button>
+          <button onclick="location.href='/alex.html#circle'">
+              <i data-lucide="users-round"></i>
+              <span>Circle</span>
+          </button>
+          <button onclick="logout()">
+              <i data-lucide="log-out"></i>
+              <span>Log Out</span>
+          </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+
+      <!-- Schedule Section -->
+      <section id="schedule" class="page">
+          <h2>Personal Schedule</h2>
+          <p>Keep track of your classes, plans, and check-ins.</p>
+
+          <div class="card">
+              <h3>Add to Schedule</h3>
+              <form id="addScheduleForm">
+                  <input type="text" id="schedName" placeholder="Class or plan (e.g. COSC 4337, Gym, Study session)" maxlength="100" required>
+                  <label class="when-label">When? (today up to 1 year ahead)</label>
+                  <div class="when-row">
+                      <input type="text" id="schedDate" placeholder="mm/dd/yyyy" inputmode="numeric" maxlength="10" autocomplete="off" required>
+                      <input type="text" id="schedClock" placeholder="hh:mm" inputmode="numeric" maxlength="5" autocomplete="off" required>
+                      <select id="schedAmPm">
+                          <option>AM</option>
+                          <option>PM</option>
+                      </select>
+                  </div>
+                  <button type="submit">Add</button>
+                  <p id="schedMsg" class="muted"></p>
+              </form>
+          </div>
+
+          <div id="scheduleList">
+              <p>Loading your schedule...</p>
+          </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+      // whoever is logged in (set by login.html)
+      const accountId = localStorage.getItem("accountId");
+      document.getElementById("topUser").textContent =
+          "@" + (localStorage.getItem("username") || "");
+
+      function logout() {
+          localStorage.clear();
+          sessionStorage.clear();
+          location.href = "/login.html";
+      }
+
+      async function loadSchedule() {
+          const scheduleList = document.getElementById('scheduleList');
+
+          try {
+              // Grab the schedule data from app.py
+              const response = await fetch(`/api/accounts/${accountId}/schedules`);
+              const schedules = await response.json();
+
+              scheduleList.innerHTML = '';
+
+              if (schedules.length === 0) {
+                  scheduleList.innerHTML = '<div class="card"><p>Nothing on your schedule yet. Add a class or plan above!</p></div>';
+                  return;
+              }
+
+              schedules.forEach(item => {
+                  let statusText = item.status === 'pending' ? 'Not checked in' : item.status.replace('_', ' ');
+                  let statusColor = item.status === 'checked_in' ? 'green' : (item.status === 'skipped' ? 'red' : 'gray');
+
+                  const cardHtml = `
+                      <div class="card schedule-card" id="class-${item.id}">
+                          <div class="schedule-top">
+                              <div class="schedule-icon">
+                                  <i data-lucide="book-open"></i>
+                              </div>
+
+                              <div class="schedule-info">
+                                  <h3>${item.class_name}</h3>
+                                  <p>${new Date(item.class_time).toLocaleString([], {weekday: 'long', hour: '2-digit', minute:'2-digit'})}</p>
+                              </div>
+
+                              <p class="status schedule-status" style="color: ${statusColor}; font-weight: bold; text-transform: capitalize;">
+                                  ${statusText}
+                              </p>
+                          </div>
+
+                          <div class="schedule-actions">
+                              <button onclick="updateCheckInStatus(${item.id}, 'checked_in')">
+                                  Attend
+                              </button>
+                              <button class="missed-btn" onclick="updateCheckInStatus(${item.id}, 'skipped')">
+                                  Missed
+                              </button>
+                              <button class="missed-btn remove-btn" onclick="removeSchedule(${item.id})">
+                                  Remove
+                              </button>
+                          </div>
+                      </div>
+                  `;
+                  scheduleList.innerHTML += cardHtml;
+              });
+
+              lucide.createIcons();
+
+          } catch (error) {
+              console.error("Error loading schedule:", error);
+              scheduleList.innerHTML = '<p>Error loading schedule from server. Make sure app.py is running.</p>';
+          }
+      }
+
+      // Function to update the check-in status
+      async function updateCheckInStatus(scheduleId, newStatus) {
+          try {
+              const response = await fetch(`/api/schedules/${scheduleId}/status`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ status: newStatus })
+              });
+
+              if (response.ok) {
+                  loadSchedule();
+              } else {
+                  alert("Failed to update status.");
+              }
+          } catch (error) {
+              console.error("Error updating status:", error);
+          }
+      }
+
+      // ---- date/time boxes: auto-add "/" and ":" and block extra digits ----
+      const dateBox  = document.getElementById("schedDate");
+      const clockBox = document.getElementById("schedClock");
+
+      dateBox.addEventListener("input", () => {
+          const d = dateBox.value.replace(/\D/g, "").slice(0, 8);      // max 8 digits: mmddyyyy
+          let out = d.slice(0, 2);
+          if (d.length > 2) out += "/" + d.slice(2, 4);
+          if (d.length > 4) out += "/" + d.slice(4, 8);
+          dateBox.value = out;
+      });
+
+      clockBox.addEventListener("input", () => {
+          const d = clockBox.value.replace(/\D/g, "").slice(0, 4);     // max 4 digits: hhmm
+          clockBox.value = d.length > 2 ? d.slice(0, 2) + ":" + d.slice(2) : d;
+      });
+
+      // turn the three boxes into "YYYY-MM-DDTHH:MM", or return an error message
+      function readWhen() {
+          const dm = dateBox.value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+          if (!dm) return { error: "Type the date as mm/dd/yyyy (e.g. 10/13/2026)." };
+          const month = +dm[1], day = +dm[2], year = +dm[3];
+          if (month < 1 || month > 12) return { error: "Month must be 01 to 12." };
+          const daysInMonth = new Date(year, month, 0).getDate();
+          if (day < 1 || day > daysInMonth) return { error: `That month only has ${daysInMonth} days.` };
+          // only today through one year from now
+          const picked = new Date(year, month - 1, day);
+          const today = new Date(); today.setHours(0, 0, 0, 0);
+          const yearOut = new Date(today); yearOut.setFullYear(yearOut.getFullYear() + 1);
+          if (picked < today)   return { error: "That date already passed. Pick today or later." };
+          if (picked > yearOut) return { error: "Pick a date within the next year." };
+
+          const tm = clockBox.value.match(/^(\d{1,2}):(\d{2})$/);
+          if (!tm) return { error: "Type the time as hh:mm (e.g. 09:30)." };
+          let hour = +tm[1]; const minute = +tm[2];
+          if (hour < 1 || hour > 12) return { error: "Hour must be 1 to 12." };
+          if (minute > 59) return { error: "Minutes must be 00 to 59." };
+
+          // 12-hour -> 24-hour
+          const pm = document.getElementById("schedAmPm").value === "PM";
+          if (pm && hour !== 12) hour += 12;
+          if (!pm && hour === 12) hour = 0;
+
+          const pad = n => String(n).padStart(2, "0");
+          return { value: `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}` };
+      }
+
+      // Add a class or plan
+      document.getElementById("addScheduleForm").addEventListener("submit", async e => {
+          e.preventDefault();
+          const msg = document.getElementById("schedMsg");
+          const when = readWhen();
+          if (when.error) {
+              msg.textContent = when.error;
+              msg.classList.add("error");
+              return;
+          }
+          msg.classList.remove("error");
+
+          const res = await fetch(`/api/accounts/${accountId}/schedules`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                  class_name: document.getElementById("schedName").value,
+                  class_time: when.value
+              })
+          });
+          msg.textContent = (await res.json()).message;
+          if (res.ok) {
+              e.target.reset();
+              loadSchedule();
+          }
+      });
+
+      // Remove one item
+      async function removeSchedule(scheduleId) {
+          if (!confirm("Remove this from your schedule?")) return;
+          await fetch(`/api/schedules/${scheduleId}?account_id=${accountId}`, { method: "DELETE" });
+          loadSchedule();
+      }
+
+      lucide.createIcons();
+      loadSchedule();
+  </script>
+
+</body>
+</html>

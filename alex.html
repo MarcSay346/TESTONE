@@ -1,341 +1,193 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Scene</title>
+  <script>
+    if (!localStorage.getItem("accountId")) location.href = "/login.html";
+  </script>
   <link rel="icon" type="image/png" href="images/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-<!--  top bar -->
 
+<!-- top bar -->
 <header class="topbar">
-
-    <div class="header-brand">
-        <img src="images/logo.png"
-             alt="CoogScene Logo"
-             class="header-logo">
-
-        <div class="header-brand-text">
-            <h2>CoogScene</h2>
-            <p>Your campus. Your circle.</p>
-        </div>
+  <div class="header-brand">
+    <img src="images/logo.png" alt="CoogScene Logo" class="header-logo" onerror="this.style.display='none'">
+    <div class="header-brand-text">
+      <h2>CoogScene</h2>
+      <p>Your campus. Your circle.</p>
     </div>
+  </div>
 
-    <div class="account-buttons">
-        <button class="login-btn">Log In</button>
-        <button class="signup-btn">Sign Up</button>
-    </div>
-
+  <div class="account-buttons">
+    <span class="topbar-user" id="topUser"></span>
+    <button class="login-btn" onclick="logout()">Log Out</button>
+  </div>
 </header>
 
-
-
-  <div class="layout">
+<div class="layout">
   <aside class="sidebar">
     <h1>My Scene</h1>
 
-<nav>
-    <button class="active" onclick="showPage('home')">
-        <i data-lucide="house"></i>
-        <span>Home</span>
-    </button>
-
-    <button onclick="showPage('schedule')">
-        <i data-lucide="calendar-days"></i>
-        <span>Schedule</span>
-    </button>
-
-    <button onclick="showPage('fits')">
-        <i data-lucide="shirt"></i>
-        <span>Fit Check</span>
-    </button>
-
-    <button onclick="showPage('circle')">
-        <i data-lucide="users-round"></i>
-        <span>Circle</span>
-    </button>
-</nav>
-
-
+    <nav>
+      <button class="active" onclick="showPage('home')">
+        <i data-lucide="house"></i><span>Home</span>
+      </button>
+      <button onclick="location.href='/schedule.html'">
+        <i data-lucide="calendar-days"></i><span>Schedule</span>
+      </button>
+      <button onclick="showPage('fits')">
+        <i data-lucide="shirt"></i><span>Fit Check</span>
+      </button>
+      <button onclick="showPage('circle')">
+        <i data-lucide="users-round"></i><span>Circle</span>
+      </button>
+      <button onclick="logout()">
+        <i data-lucide="log-out"></i><span>Log Out</span>
+      </button>
+    </nav>
   </aside>
 
   <main class="content">
 
-    
-<section id="home" class="page">
+    <!-- HOME -->
+    <section id="home" class="page">
+      <h2 id="welcome">Home</h2>
+      <p>See what your circle is up to!</p>
 
-    <h2>Home</h2>
-    <p>See what your circle is up to!</p>
-
-    <!-- status -->
-
-    <div class="card">
-    <h3>Circle Activity</h3>
-    <p>See what your friends are up to around campus.</p>
-
-    <div id="campusFeed">
-        <p class="feed-empty">No recent activity yet.</p>
-    </div>
-
-    
-   <button id="clearActivityBtn" class="clear-activity-btn" onclick="clearActivity()" hidden>Clear Activity</button>
-   </div>
-
-
-
-    <div class="card">
-    <h3>What's Happening?</h3>
-
-    <div class="friends-status">
-
-    <div class="friend-box">
-        <div class="friend-avatar">P1</div>
-        <div class="friend-info">
-            <strong>Person 1</strong>
-            <span>placeholder</span>
+      <div class="card">
+        <h3>Circle Activity</h3>
+        <p>See what your friends are up to around campus.</p>
+        <div id="campusFeed">
+          <p class="feed-empty">Loading...</p>
         </div>
-        <span class="status free">Free Now</span>
-    </div>
+        <button id="clearActivityBtn" class="clear-activity-btn" onclick="clearActivity()" hidden>Clear Activity</button>
+      </div>
 
-    <div class="friend-box">
-        <div class="friend-avatar">P2</div>
-        <div class="friend-info">
-            <strong>Person 2</strong>
-            <span>placeholder</span>
+      <div class="card">
+        <h3>What's Happening?</h3>
+        <div class="friends-status" id="friendsStatus">
+          <p class="feed-empty">Loading...</p>
         </div>
-        <span class="status busy">In Class</span>
-    </div>
+      </div>
 
-    <div class="friend-box">
-        <div class="friend-avatar">P3</div>
-        <div class="friend-info">
-            <strong>Person 3</strong>
-            <span>placeholder</span>
+      <div class="card">
+        <h3>Schedule</h3>
+        <div class="plans-list" id="plansList">
+          <p class="feed-empty">Loading...</p>
         </div>
-        <span class="status away">Not Checked In</span>
-    </div>
+      </div>
+    </section>
 
-</div>
+    <!-- SCHEDULE -->
+    <section id="schedule" class="page hidden">
+      <h2>Personal Schedule</h2>
+      <p>Keep track of your classes, plans, and check-ins.</p>
 
-    </div>
+      <div class="card">
+        <h3>Add to Schedule</h3>
+        <form id="addScheduleForm">
+          <input type="text" id="schedName" placeholder="Class or plan (e.g. COSC 4337, Gym, Study at MD Anderson Library)" maxlength="100" required>
+          <input type="datetime-local" id="schedTime" required>
+          <button type="submit">Add</button>
+          <p id="schedMsg" class="muted"></p>
+        </form>
+      </div>
 
+      <div id="scheduleList">
+        <p class="feed-empty">Loading...</p>
+      </div>
+    </section>
 
-<div class="card">
-    <h3>Schedule</h3>
+    <!-- FIT CHECK -->
+    <section id="fits" class="page hidden">
+      <h2>Fit Check</h2>
+      <p>Share your style with the circle!</p>
 
-    <div class="plans-list">
-        <div class="plan-box">
-            <div class="plan-icon">📅</div>
-            <div class="plan-info">
-                <strong>Class 1</strong>
-                <span>Upcoming plan</span>
-            </div>
-        </div>
+      <div class="card fit-upload-card">
+        <h3>Post Your Fit</h3>
 
-        <div class="plan-box">
-            <div class="plan-icon">📅</div>
-            <div class="plan-info">
-                <strong>Class 2</strong>
-                <span>Upcoming plan</span>
-            </div>
-        </div>
-
-        <div class="plan-box">
-            <div class="plan-icon">📅</div>
-            <div class="plan-info">
-                <strong>Class 3</strong>
-                <span>Upcoming plan</span>
-            </div>
-        </div>
-
-        <div class="plan-box">
-            <div class="plan-icon">📅</div>
-            <div class="plan-info">
-                <strong>Class 4</strong>
-                <span>Upcoming plan</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-</section>
-
-
-    
-<section id="schedule" class="page hidden">
-    <h2>Personal Schedule</h2>
-    <p>Keep track of your classes and check-ins.</p>
-
-    <div class="card schedule-card">
-        <div class="schedule-top">
-            <div class="schedule-icon">
-                <i data-lucide="book-open"></i>
-            </div>
-
-            <div class="schedule-info">
-                <h3>Class 1</h3>
-                <p>Monday · Wednesday</p>
-            </div>
-
-            <p class="status schedule-status">Not checked in</p>
-        </div>
-
-        <div class="schedule-actions">
-            <button onclick="checkIn(this, 'Attended')">
-                Attend
-            </button>
-            <button class="missed-btn" onclick="checkIn(this, 'Missed')">
-                Missed
-            </button>
-        </div>
-    </div>
-
-    <div class="card schedule-card">
-        <div class="schedule-top">
-            <div class="schedule-icon">
-                <i data-lucide="book-open"></i>
-            </div>
-
-            <div class="schedule-info">
-                <h3>Class 2</h3>
-                <p>Tuesday · Thursday · Friday</p>
-            </div>
-
-            <p class="status schedule-status">Not checked in</p>
-        </div>
-
-        <div class="schedule-actions">
-            <button onclick="checkIn(this, 'Attended')">
-                Attend
-            </button>
-            <button class="missed-btn" onclick="checkIn(this, 'Miss')">
-                Missed
-            </button>
-        </div>
-    </div>
-</section>
-
-
-    
-<section id="fits" class="page hidden">
-    <h2>Fit Check</h2>
-    <p>Share your style with the circle!</p>
-
-    <div class="card fit-upload-card">
-        <h3>Share Your Fit</h3>
-
-        <div class="fit-upload-area">
-            <div class="fit-upload-icon">
-                <i data-lucide="image-plus"></i>
-            </div>
-
+        <form id="fitForm">
+          <div class="fit-upload-area">
+            <div class="fit-upload-icon"><i data-lucide="image-plus"></i></div>
             <strong>Upload your outfit</strong>
             <p>Choose a photo to share your look</p>
-
-            <label for="outfitUpload" class="choose-photo-btn">
-                Choose Photo
-            </label>
-
-            <input type="file" id="outfitUpload"
-                   accept="image/*" hidden>
-
+            <label for="outfitUpload" class="choose-photo-btn">Choose Photo</label>
+            <input type="file" id="outfitUpload" accept="image/*" hidden>
             <img id="preview" alt="Outfit preview" hidden>
-        </div>
+          </div>
 
-        <label for="visibility" class="fit-label">
-            Who can see your fit?
-        </label>
+          <label for="caption" class="fit-label">Caption</label>
+          <input type="text" id="caption" placeholder="Today's fit..." maxlength="150">
 
-        <select id="visibility" class="fit-visibility">
-            <option value="Public">Public</option>
-            <option value="Circle Only">Circle Only</option>
-            <option value="Only Me">Only Me</option>
-        </select>
+          <label for="visibility" class="fit-label">Who can see your fit?</label>
+          <select id="visibility" class="fit-visibility">
+            <option value="public">Campus Hub</option>
+            <option value="friends">Close Friends</option>
+          </select>
 
-        <button class="post-fit-btn" onclick="postOutfit()">
-            Post Fit
-        </button>
-    </div>
+          <button type="submit" class="post-fit-btn">Post My Fit</button>
+          <p id="fitMsg" class="muted"></p>
+        </form>
+      </div>
 
-    <h3 class="fit-feed-title">Outfit Feed</h3>
+      <div class="tabs">
+        <button type="button" class="tab active" data-feed="public">Campus Hub</button>
+        <button type="button" class="tab" data-feed="friends">Close Friends</button>
+      </div>
 
-    <div id="outfitFeed"></div>
-</section>
+      <div id="outfitFeed"></div>
+    </section>
 
-
+    <!-- CIRCLE -->
     <section id="circle" class="page hidden">
-      <h2>My Circle </h2>
-      
-      
-<div class="card">
-    <div class="members-header">
-        <h3>Members</h3>
-        <span class="member-count">4 members</span>
-    </div>
+      <h2>My Circle</h2>
+      <p>The people you share your schedule with.</p>
 
-    <div class="member-row">
-        <div class="member-avatar">AR</div>
-        <div class="member-info">
-            <h4>placeholder name</h4>
-            <p>placeholder</p>
+      <div class="card">
+        <div class="cal-header">
+          <h3>Circle Calendar</h3>
+          <div class="cal-nav">
+            <button type="button" id="calPrev" onclick="moveMonth(-1)" aria-label="Previous month">‹</button>
+            <span id="calTitle"></span>
+            <button type="button" id="calNext" onclick="moveMonth(1)" aria-label="Next month">›</button>
+            <button type="button" class="secondary" onclick="goToday()">Today</button>
+          </div>
         </div>
-        <span class="member-status on-campus">On Campus</span>
-    </div>
-
-    <div class="member-row">
-        <div class="member-avatar">JL</div>
-        <div class="member-info">
-            <h4>placeholder name</h4>
-            <p>placeholder </p>
+        <div class="cal-legend" id="calLegend"></div>
+        <div class="cal-scroll">
+          <div class="cal-month" id="calGrid"></div>
         </div>
-        <span class="member-status available">Free Now</span>
-    </div>
+      </div>
 
-    <div class="member-row">
-        <div class="member-avatar">ST</div>
-        <div class="member-info">
-            <h4>placeholder name</h4>
-            <p>placeholder </p>
+      <div class="card">
+        <div class="members-header">
+          <h3>Members</h3>
+          <span class="member-count" id="memberCount"></span>
         </div>
-        <span class="member-status in-class">In Class</span>
-    </div>
-
-    <div class="member-row">
-        <div class="member-avatar">MD</div>
-        <div class="member-info">
-            <h4>placeholder name</h4>
-            <p>placeholder</p>
+        <div id="circleMembers">
+          <p class="feed-empty">Loading...</p>
         </div>
-        <span class="member-status on-campus">On Campus</span>
-    </div>
-</div>
+      </div>
 
-     <div class="card">
-    <h3>Invite Friends</h3>
-    <p>Scan this QR code or copy your invite code!</p>
-
-    <div id="inviteQR"></div>
-
-    <p>Invite Code: <strong id="inviteCode">COOG123</strong></p>
-
-    <button onclick="copyInvite()">Copy Invite Code</button>
-</div>
+      <div class="card">
+        <h3>Invite Friends</h3>
+        <p>Scan this QR code or copy your invite code!</p>
+        <div id="inviteQR"></div>
+        <p>Invite Code: <strong id="inviteCode"></strong></p>
+        <button onclick="copyInvite()">Copy Invite Code</button>
+      </div>
     </section>
 
   </main>
-  </div>
-
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="script.js"></script>
-<script>
-    lucide.createIcons();
-</script>   
-
 </body>
 </html>

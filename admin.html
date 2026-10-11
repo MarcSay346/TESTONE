@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoogScene Admin</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="header-brand">
+    <img src="images/logo.png" alt="CoogScene Logo" class="header-logo" onerror="this.style.display='none'">
+    <div class="header-brand-text">
+      <h2>CoogScene</h2>
+      <p>Admin dashboard</p>
+    </div>
+  </div>
+
+  <div class="account-buttons">
+    <span class="admin-badge">Admin</span>
+    <span class="topbar-user" id="who"></span>
+    <button class="login-btn hidden" id="topLogout" onclick="logout()">Log Out</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Admin</h1>
+    <p>Keep the scene safe.</p>
+
+    <nav id="adminNav" class="hidden">
+      <button class="active" onclick="showPage('overview')">
+        <i data-lucide="layout-dashboard"></i><span>Overview</span>
+      </button>
+      <button onclick="showPage('reports')">
+        <i data-lucide="flag"></i><span>Reports</span>
+      </button>
+      <button onclick="location.href='/alex.html'">
+        <i data-lucide="arrow-left"></i><span>Back to App</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <section id="adminLogin" class="page">
+      <h2>Admin Login</h2>
+      <p>Staff access only.</p>
+      <div class="card">
+        <h3>Sign In</h3>
+        <input id="aUser" placeholder="Admin username">
+        <input id="aPass" type="password" placeholder="Admin password">
+        <button onclick="adminLogin()">Sign In</button>
+        <p id="msg"></p>
+      </div>
+    </section>
+
+    <section id="overview" class="page hidden">
+      <h2>Overview</h2>
+      <p>How CoogScene is doing.</p>
+      <div class="stats">
+        <div class="card"><p class="num" id="sUsers">–</p><p class="label">Users</p></div>
+        <div class="card"><p class="num" id="sCircles">–</p><p class="label">Circles</p></div>
+        <div class="card"><p class="num" id="sCheckins">–</p><p class="label">Check-ins</p></div>
+        <div class="card"><p class="num" id="sReports">–</p><p class="label">Open Reports</p></div>
+      </div>
+    </section>
+
+    <section id="reports" class="page hidden">
+      <h2>Reports</h2>
+      <p>Posts flagged by users. Remove the post or dismiss the report.</p>
+      <div class="card" id="reportList"></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+let adminId = sessionStorage.getItem("adminId");
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b =>
+    b.classList.toggle("active", b.getAttribute("onclick").includes(`'${id}'`)));
+}
+
+async function adminLogin() {
+  const msg = document.getElementById("msg");
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: document.getElementById("aUser").value,
+      password: document.getElementById("aPass").value
+    })
+  });
+  const data = await res.json();
+  if (!res.ok)        { msg.textContent = data.message; return; }
+  if (!data.is_admin) { msg.textContent = "This account is not an admin."; return; }
+
+  adminId = data.id;
+  sessionStorage.setItem("adminId", adminId);
+  sessionStorage.setItem("adminName", document.getElementById("aUser").value);
+  startDashboard();
+}
+
+function logout() {
+  sessionStorage.clear();
+  localStorage.clear();
+  location.href = "/login.html";
+}
+
+async function api(url, opts = {}) {
+  opts.headers = { ...(opts.headers || {}), "X-Account-Id": adminId };
+  const r = await fetch(url, opts);
+  if (r.status === 403) { logout(); throw new Error("not admin"); }
+  return r.json();
+}
+
+async function loadStats() {
+  const s = await api("/api/admin/stats");
+  sUsers.textContent = s.users;
+  sCircles.textContent = s.circles;
+  sCheckins.textContent = s.checkins;
+  sReports.textContent = s.reports;
+}
+
+async function loadReports() {
+  const list = await api("/api/admin/reports");
+  reportList.innerHTML = list.map(r => `
+    <div class="report">
+      <img src="${r.image_url}" alt="">
+      <div class="info">
+        <p class="reason">${r.reason}</p>
+        <p>Posted by <b>@${r.posted_by}</b></p>
+        <p class="muted">Reported by @${r.reported_by} · ${new Date(r.created_at).toLocaleString()}</p>
+      </div>
+      <div>
+        <button onclick="removePost(${r.fit_id})">Remove Post</button>
+        <button class="secondary" onclick="dismiss(${r.id})">Dismiss</button>
+      </div>
+    </div>`).join("") || `<p class="feed-empty">No open reports. All clear.</p>`;
+}
+
+async function removePost(fitId) {
+  if (!confirm("Remove this post for everyone?")) return;
+  await api(`/api/admin/fits/${fitId}`, { method: "DELETE" });
+  loadReports(); loadStats();
+}
+
+async function dismiss(reportId) {
+  await api(`/api/admin/reports/${reportId}/dismiss`, { method: "POST" });
+  loadReports(); loadStats();
+}
+
+function startDashboard() {
+  document.getElementById("who").textContent = "@" + sessionStorage.getItem("adminName");
+  document.getElementById("adminNav").classList.remove("hidden");
+  document.getElementById("topLogout").classList.remove("hidden");
+  showPage("overview");
+  loadStats(); loadReports();
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Enter" && !adminId) adminLogin(); });
+lucide.createIcons();
+if (adminId) startDashboard();
+</script>
+</body>
+</html>

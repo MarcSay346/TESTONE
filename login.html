@@ -1,36 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoogScene – Log In</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <h1>Login</h1>
-  <p>No account? <a href="/register.html">Register</a></p>
 
-  <input id="username" placeholder="Username"><br>
-  <input id="password" type="password" placeholder="Password"><br>
-  <button onclick="login()">Log in</button>
+<header class="topbar">
+  <div class="header-brand">
+    <img src="images/logo.png" alt="CoogScene Logo" class="header-logo" onerror="this.style.display='none'">
+    <div class="header-brand-text">
+      <h2>CoogScene</h2>
+      <p>Your campus. Your circle.</p>
+    </div>
+  </div>
 
-  <p id="msg"></p>
+  <div class="account-buttons">
+    <button class="login-btn" onclick="showForm('login')">Log In</button>
+    <button class="signup-btn" onclick="showForm('register')">Sign Up</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Welcome</h1>
+    <p>See where your friends are, check in to class, and share your fit.</p>
+
+    <nav>
+      <button class="active" onclick="showForm('login')">
+        <i data-lucide="log-in"></i><span>Log In</span>
+      </button>
+      <button onclick="showForm('register')">
+        <i data-lucide="user-plus"></i><span>Sign Up</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <section id="login" class="page">
+      <h2>Welcome back</h2>
+      <p>Log in to see what your circle is up to.</p>
+
+      <div class="card">
+        <h3>Log In</h3>
+        <input id="loginUser" placeholder="Username or email" autocomplete="username">
+        <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
+        <button onclick="login()">Log In</button>
+        <p>No account? <a href="#" onclick="showForm('register')">Sign up</a></p>
+      </div>
+    </section>
+
+    <section id="register" class="page hidden">
+      <h2>Join CoogScene</h2>
+      <p>Create an account and start your circle.</p>
+
+      <div class="card">
+        <h3>Sign Up</h3>
+        <input id="regUser" placeholder="Username" autocomplete="username">
+        <input id="regEmail" type="email" placeholder="Email" autocomplete="email">
+        <input id="regUni" placeholder="University" value="University of Houston">
+        <input id="regPass" type="password" placeholder="Password" autocomplete="new-password">
+        <button onclick="register()">Create Account</button>
+        <p>Have an account? <a href="#" onclick="showForm('login')">Log in</a></p>
+      </div>
+    </section>
+
+    <p id="msg"></p>
+  </main>
+</div>
 
 <script>
-async function login() {
-  const res = await fetch("/api/login", {
+function showForm(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b =>
+    b.classList.toggle("active", b.getAttribute("onclick").includes(`'${id}'`)));
+  document.getElementById("msg").textContent = "";
+}
+
+async function post(url, body) {
+  const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: document.getElementById("username").value,
-      password: document.getElementById("password").value
-    })
+    body: JSON.stringify(body)
   });
-  const data = await res.json();
-  document.getElementById("msg").textContent = data.message;
+  return { ok: res.ok, data: await res.json() };
+}
 
-  if (res.ok) {
-    localStorage.setItem("accountId", data.id);
-    window.location.href = "/alex.html";
+function goIn(id, username, isAdmin) {
+  localStorage.setItem("accountId", id);
+  localStorage.setItem("username", username);
+
+  if (isAdmin) {
+    sessionStorage.setItem("adminId", id);
+    sessionStorage.setItem("adminName", username);
+    location.href = "/admin.html";
+  } else {
+    location.href = "/alex.html";
   }
 }
+
+async function login() {
+  const username = document.getElementById("loginUser").value;
+  const { ok, data } = await post("/api/login", {
+    username, password: document.getElementById("loginPass").value
+  });
+  document.getElementById("msg").textContent = data.message;
+  if (ok) goIn(data.id, username, data.is_admin);
+}
+
+async function register() {
+  const username = document.getElementById("regUser").value;
+  const { ok, data } = await post("/api/signup", {
+    username,
+    email: document.getElementById("regEmail").value,
+    university_name: document.getElementById("regUni").value,
+    password: document.getElementById("regPass").value
+  });
+  document.getElementById("msg").textContent = data.message;
+  if (ok) goIn(data.id, username, false);
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  document.getElementById("login").classList.contains("hidden") ? register() : login();
+});
+
+lucide.createIcons();
 </script>
 </body>
 </html>
