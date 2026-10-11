@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+</head>
+<body>
+  <h1>Register</h1>
+
+  <input id="username" placeholder="Username"><br>
+  <input id="email" type="email" placeholder="Email"><br>
+  <input id="university" placeholder="University" value="University of Houston"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="register()">Create account</button>
+
+  <p id="msg"></p>
+  <p>Already have an account? <a href="/login.html">Log in</a></p>
+
+<script>
+async function register() {
+  const res = await fetch("/api/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: document.getElementById("username").value,
+      email: document.getElementById("email").value,
+      university_name: document.getElementById("university").value,
+      password: document.getElementById("password").value
+    })
+  });
+  const data = await res.json();
+  document.getElementById("msg").textContent = data.message;
+
+  if (res.ok) {
+    localStorage.setItem("accountId", data.id);
+    window.location.href = "/alex.html";
+  }
+}
+</script>
+</body>
+</html>
