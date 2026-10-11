@@ -1,0 +1,39 @@
+<!-- CIRCLE -->
+    <section id="circle" class="page hidden">
+      <h2>My Circle</h2>
+      <p>The people you share your schedule with.</p>
+
+      <div class="card">
+        <div class="cal-header">
+          <h3>Circle Calendar</h3>
+          <div class="cal-nav">
+            <button type="button" id="calPrev" onclick="moveMonth(-1)" aria-label="Previous month">‹</button>
+            <span id="calTitle"></span>
+            <button type="button" id="calNext" onclick="moveMonth(1)" aria-label="Next month">›</button>
+            <button type="button" class="secondary" onclick="goToday()">Today</button>
+          </div>
+        </div>
+        <div class="cal-legend" id="calLegend"></div>
+        <div class="cal-scroll">
+          <div class="cal-month" id="calGrid"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="members-header">
+          <h3>Members</h3>
+          <span class="member-count" id="memberCount"></span>
+        </div>
+        <div id="circleMembers">
+          <p class="feed-empty">Loading...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Invite Friends</h3>
+        <p>Scan this QR code or copy your invite code!</p>
+        <div id="inviteQR"></div>
+        <p>Invite Code: <strong id="inviteCode"></strong></p>
+        <button onclick="copyInvite()">Copy Invite Code</button>
+      </div>
+    </section>
