@@ -37,3 +37,9 @@ http://127.0.0.1:5000/login.html
 Quaiden:
 C:\Users\nerdz\OneDrive\Documents
 
+Alex:
+Go to terminal and run this
+python3 -m pip install flask pg8000 python-dotenv
+and this to host:
+.venv\Scripts\python app.py
+
