@@ -166,48 +166,107 @@
 </section>
 
 
-    <section id="schedule" class="page hidden">
-      <h2>personal schedule</h2>
-      <p>What's today?</p>
+    
+<section id="schedule" class="page hidden">
+    <h2>Personal Schedule</h2>
+    <p>Keep track of your classes and check-ins.</p>
 
-      <div class="card">
-        <h3>class 1</h3>
-        <p>Monday Wednesday</p>
-        <button onclick="checkIn(this, 'Attended')">Attend</button>
-        <button onclick="checkIn(this, 'Miss')">Missed</button>
-        <p class="status">Not checked in</p>
-      </div>
+    <div class="card schedule-card">
+        <div class="schedule-top">
+            <div class="schedule-icon">
+                <i data-lucide="book-open"></i>
+            </div>
 
-      <div class="card">
-        <h3>class 2</h3>
-        <p>Tuesday Thursday Friday</p>
-        <button onclick="checkIn(this, 'Attended')">Attend</button>
-        <button onclick="checkIn(this, 'Miss')">Missed</button>
-        <p class="status">Not checked in</p>
-      </div>
-    </section>
+            <div class="schedule-info">
+                <h3>Class 1</h3>
+                <p>Monday · Wednesday</p>
+            </div>
 
-    <section id="fits" class="page hidden">
-      <h2>Outfits</h2>
-      <p>Share your style with the circle!</p>
+            <p class="status schedule-status">Not checked in</p>
+        </div>
 
-      <div class="card">
-        <h3>Outfit Upload!</h3>
-        <input type="file" id="outfitUpload" accept="image/*">
-        <img id="preview" alt="Outfit preview" hidden>
+        <div class="schedule-actions">
+            <button onclick="checkIn(this, 'Attended')">
+                Attend
+            </button>
+            <button class="missed-btn" onclick="checkIn(this, 'Missed')">
+                Missed
+            </button>
+        </div>
+    </div>
 
-        <select id="visibility">
-          <option value="Public">Public</option>
-          <option value="Circle Only">Circle Only</option>
-          <option value="Only Me">Only Me</option>
+    <div class="card schedule-card">
+        <div class="schedule-top">
+            <div class="schedule-icon">
+                <i data-lucide="book-open"></i>
+            </div>
+
+            <div class="schedule-info">
+                <h3>Class 2</h3>
+                <p>Tuesday · Thursday · Friday</p>
+            </div>
+
+            <p class="status schedule-status">Not checked in</p>
+        </div>
+
+        <div class="schedule-actions">
+            <button onclick="checkIn(this, 'Attended')">
+                Attend
+            </button>
+            <button class="missed-btn" onclick="checkIn(this, 'Miss')">
+                Missed
+            </button>
+        </div>
+    </div>
+</section>
+
+
+    
+<section id="fits" class="page hidden">
+    <h2>Fit Check</h2>
+    <p>Share your style with the circle!</p>
+
+    <div class="card fit-upload-card">
+        <h3>Share Your Fit</h3>
+
+        <div class="fit-upload-area">
+            <div class="fit-upload-icon">
+                <i data-lucide="image-plus"></i>
+            </div>
+
+            <strong>Upload your outfit</strong>
+            <p>Choose a photo to share your look</p>
+
+            <label for="outfitUpload" class="choose-photo-btn">
+                Choose Photo
+            </label>
+
+            <input type="file" id="outfitUpload"
+                   accept="image/*" hidden>
+
+            <img id="preview" alt="Outfit preview" hidden>
+        </div>
+
+        <label for="visibility" class="fit-label">
+            Who can see your fit?
+        </label>
+
+        <select id="visibility" class="fit-visibility">
+            <option value="Public">Public</option>
+            <option value="Circle Only">Circle Only</option>
+            <option value="Only Me">Only Me</option>
         </select>
 
-        <button onclick="postOutfit()">Post Fit</button>
-      </div>
+        <button class="post-fit-btn" onclick="postOutfit()">
+            Post Fit
+        </button>
+    </div>
 
-      <h3>Outfit Feed</h3>
-      <div id="outfitFeed"></div>
-    </section>
+    <h3 class="fit-feed-title">Outfit Feed</h3>
+
+    <div id="outfitFeed"></div>
+</section>
+
 
     <section id="circle" class="page hidden">
       <h2>My Circle </h2>
