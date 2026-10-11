@@ -4,68 +4,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hypothetical name</title>
+  <title>My Scene</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<!--  top bar -->
 
+<header class="topbar">
+
+    <div class="header-brand">
+        <img src="images/logo.png"
+             alt="CoogScene Logo"
+             class="header-logo">
+
+        <div class="header-brand-text">
+            <h2>CoogScene</h2>
+            <p>Your campus. Your circle.</p>
+        </div>
+    </div>
+
+    <div class="account-buttons">
+        <button class="login-btn">Log In</button>
+        <button class="signup-btn">Sign Up</button>
+    </div>
+
+</header>
+
+
+
+  <div class="layout">
   <aside class="sidebar">
-    <h1>filler </h1>
-    <p>more random filler</p>
+    <h1>My Scene</h1>
 
-    <nav>
-      <button onclick="showPage('home')">Home</button>
-      <button onclick="showPage('schedule')">Schedule</button>
-      <button onclick="showPage('fits')">Fits</button>
-      <button onclick="showPage('circle')">Circle</button>
-    </nav>
+<nav>
+    <button class="active" onclick="showPage('home')">
+        <i data-lucide="house"></i>
+        <span>Home</span>
+    </button>
+
+    <button onclick="showPage('schedule')">
+        <i data-lucide="calendar-days"></i>
+        <span>Schedule</span>
+    </button>
+
+    <button onclick="showPage('fits')">
+        <i data-lucide="shirt"></i>
+        <span>Fit Check</span>
+    </button>
+
+    <button onclick="showPage('circle')">
+        <i data-lucide="users-round"></i>
+        <span>Circle</span>
+    </button>
+</nav>
+
+
   </aside>
 
   <main class="content">
 
-    <section id="home" class="page">
-      <h2>[welcome page]</h2>
-      <p>status update</p>
+    
+<section id="home" class="page">
 
-      <div class="card">
-        <h3>what everyones doing here</h3>
-        <p>person 1 - ex:Free right now</p>
-        <p>person 2 - ex:In class</p>
-        <p>person 3 - ex:Not checked in</p>
-      </div>
+    <h2>Home</h2>
+    <p>See what your circle is up to!</p>
 
-      <div class="card">
-        <h3>plans</h3>
-        <p>class 1</p>
-        <p>class 2</p>
-        <p>etc</p>
-      </div>
-    </section>
+    <!-- status -->
+
+    <div class="card">
+    <h3>Circle Activity</h3>
+    <p>See what your friends are up to around campus.</p>
+
+    <div id="campusFeed">
+        <p class="feed-empty">No recent activity yet.</p>
+    </div>
+
+    
+   <button id="clearActivityBtn" class="clear-activity-btn" onclick="clearActivity()" hidden>Clear Activity</button>
+   </div>
+
+
+
+    <div class="card">
+    <h3>What's Happening?</h3>
+
+    <div class="friends-status">
+
+    <div class="friend-box">
+        <div class="friend-avatar">P1</div>
+        <div class="friend-info">
+            <strong>Person 1</strong>
+            <span>placeholder</span>
+        </div>
+        <span class="status free">Free Now</span>
+    </div>
+
+    <div class="friend-box">
+        <div class="friend-avatar">P2</div>
+        <div class="friend-info">
+            <strong>Person 2</strong>
+            <span>placeholder</span>
+        </div>
+        <span class="status busy">In Class</span>
+    </div>
+
+    <div class="friend-box">
+        <div class="friend-avatar">P3</div>
+        <div class="friend-info">
+            <strong>Person 3</strong>
+            <span>placeholder</span>
+        </div>
+        <span class="status away">Not Checked In</span>
+    </div>
+
+</div>
+
+    </div>
+
+
+<div class="card">
+    <h3>Schedule</h3>
+
+    <div class="plans-list">
+        <div class="plan-box">
+            <div class="plan-icon">📅</div>
+            <div class="plan-info">
+                <strong>Class 1</strong>
+                <span>Upcoming plan</span>
+            </div>
+        </div>
+
+        <div class="plan-box">
+            <div class="plan-icon">📅</div>
+            <div class="plan-info">
+                <strong>Class 2</strong>
+                <span>Upcoming plan</span>
+            </div>
+        </div>
+
+        <div class="plan-box">
+            <div class="plan-icon">📅</div>
+            <div class="plan-info">
+                <strong>Class 3</strong>
+                <span>Upcoming plan</span>
+            </div>
+        </div>
+
+        <div class="plan-box">
+            <div class="plan-icon">📅</div>
+            <div class="plan-info">
+                <strong>Class 4</strong>
+                <span>Upcoming plan</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+
 
     <section id="schedule" class="page hidden">
       <h2>personal schedule</h2>
-      <p>class tracking/p>
+      <p>What's today?</p>
 
       <div class="card">
         <h3>class 1</h3>
-        <p>MW blahblah</p>
-        <button onclick="checkIn(this, 'Attended')">Attended</button>
-        <button onclick="checkIn(this, 'Skipped')">Skipped</button>
+        <p>Monday Wednesday</p>
+        <button onclick="checkIn(this, 'Attended')">Attend</button>
+        <button onclick="checkIn(this, 'Miss')">Missed</button>
         <p class="status">Not checked in</p>
       </div>
 
       <div class="card">
         <h3>class 2</h3>
-        <p>TTH blahblah</p>
-        <button onclick="checkIn(this, 'Attended')">Attended</button>
-        <button onclick="checkIn(this, 'Skipped')">Skipped</button>
+        <p>Tuesday Thursday Friday</p>
+        <button onclick="checkIn(this, 'Attended')">Attend</button>
+        <button onclick="checkIn(this, 'Miss')">Missed</button>
         <p class="status">Not checked in</p>
       </div>
     </section>
 
     <section id="fits" class="page hidden">
       <h2>Outfits</h2>
-      <p>blahblah</p>
+      <p>Share your style with the circle!</p>
 
       <div class="card">
         <h3>Outfit Upload!</h3>
@@ -88,24 +212,71 @@
     <section id="circle" class="page hidden">
       <h2>My Circle </h2>
       
-      <div class="card">
+      
+<div class="card">
+    <div class="members-header">
         <h3>Members</h3>
-        <p>person 1</p>
-        <p>person 2</p>
-        <p>person 3</p>
-        <p>person 4</p>
-      </div>
+        <span class="member-count">4 members</span>
+    </div>
 
-      <div class="card">
-        <h3>Invite Friends</h3>
-        <p>Demo invite code: blahblahblah</p>
-        <button onclick="copyInvite()">Copy Invite Code</button>
-      </div>
+    <div class="member-row">
+        <div class="member-avatar">AR</div>
+        <div class="member-info">
+            <h4>placeholder name</h4>
+            <p>placeholder</p>
+        </div>
+        <span class="member-status on-campus">On Campus</span>
+    </div>
+
+    <div class="member-row">
+        <div class="member-avatar">JL</div>
+        <div class="member-info">
+            <h4>placeholder name</h4>
+            <p>placeholder </p>
+        </div>
+        <span class="member-status available">Free Now</span>
+    </div>
+
+    <div class="member-row">
+        <div class="member-avatar">ST</div>
+        <div class="member-info">
+            <h4>placeholder name</h4>
+            <p>placeholder </p>
+        </div>
+        <span class="member-status in-class">In Class</span>
+    </div>
+
+    <div class="member-row">
+        <div class="member-avatar">MD</div>
+        <div class="member-info">
+            <h4>placeholder name</h4>
+            <p>placeholder</p>
+        </div>
+        <span class="member-status on-campus">On Campus</span>
+    </div>
+</div>
+
+     <div class="card">
+    <h3>Invite Friends</h3>
+    <p>Scan this QR code or copy your invite code!</p>
+
+    <div id="inviteQR"></div>
+
+    <p>Invite Code: <strong id="inviteCode">COOG123</strong></p>
+
+    <button onclick="copyInvite()">Copy Invite Code</button>
+</div>
     </section>
 
   </main>
+  </div>
 
-  <script src="script.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+<script>
+    lucide.createIcons();
+</script>   
+
 </body>
 </html>
-

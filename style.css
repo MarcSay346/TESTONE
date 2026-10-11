@@ -1,43 +1,50 @@
-
 * {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   background: #fffefe;
   color: #010000;
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.sidebar{
+.sidebar {
   width: 250px;
   background: #C8102E;
   color: white;
   padding: 30px 20px;
-  min-height: 100vh;
 }
 
-.sidebar h1{
-  font-size: 25px;
-  color: white;
+
+.sidebar h1 {
+    font-size: 23px;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 15px;
+    margin-bottom: 35px;
+    position: relative;
+    left: -10px;
 }
 
-.sidebar p{
+.sidebar p {
   color: white;
   font-size: 13px;
 }
 
-nav{
+nav {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 40px;
 }
 
-nav button{
+nav button {
   background: transparent;
   color: rgb(255, 255, 255);
   border: none;
@@ -48,35 +55,35 @@ nav button{
   cursor: pointer;
 }
 
-nav button:hover{
+nav button:hover {
   background: #e63f3f;
 }
 
-.content{
+.content {
   flex: 1;
-  padding: 45px;
-  max-width: 1100px;
+  padding: 35px;
+  min-width: 0;
 }
 
-h2{
+h2 {
   font-size: 30px;
   margin-bottom: 8px;
 }
 
-.card{
+.card {
   background: white;
-  padding: 25px;
+  padding: 24px;
   border-radius: 18px;
   margin-top: 22px;
-  box-shadow: 0 4px 16px #C8102E;
+  box-shadow: 0 5px 20px rgba(60, 30, 40, 0.08);
 }
 
-.card h3{
+.card h3 {
   margin-top: 0;
 }
 
 .card button,
-#fits button{
+#fits button {
   background: #C8102E;
   color: white;
   border: none;
@@ -86,57 +93,649 @@ h2{
   cursor: pointer;
 }
 
-.card button:hover{
+.card button:hover {
   background: #e63f3f;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-input, select{
+input,
+select {
   display: block;
   margin: 15px 0;
   padding: 10px;
   max-width: 100%;
 }
 
-#preview{
+#preview {
   max-width: 280px;
   width: 100%;
   border-radius: 12px;
   margin-top: 12px;
 }
 
-.outfit-photo{
+.outfit-photo {
   width: 100%;
   max-width: 300px;
   border-radius: 12px;
 }
 
-@media (max-width: 700px){
+.layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.topbar {
+  background: white;
+  width: 100%;
+  padding: 8px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0;
+  margin: 0;
+  border-bottom: 1px solid #eeeeee;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.website-name {
+  color: #C8102E;
+  font-size: 24px;
+  margin: 0;
+}
+
+.account-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.login-btn {
+  background: transparent;
+  color: #C8102E;
+  border: 2px solid #C8102E;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.signup-btn {
+  background: #e63f3f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #e63f3f
+}
+
+.signup-btn:hover {
+  background: #b20d27
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+@media (max-width: 700px) {
   body {
     flex-direction: column;
   }
 
-  .sidebar{
+  .sidebar {
     width: 100%;
     min-height: auto;
     padding: 18px;
   }
 
-  nav{
+  nav {
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 15px;
   }
 
-  nav button{
+  nav button {
     font-size: 13px;
     padding: 10px;
   }
 
-  .content{
+  .content {
     padding: 20px;
   }
+}
+
+
+@media (max-width: 600px) {
+  .topbar {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .website-name {
+    font-size: 18px;
+  }
+
+  .account-buttons {
+    gap: 6px;
+  }
+
+  .account-buttons button {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+button, input, select{
+  font-family: inherit;
+}
+body{
+  background: #F6F7FB;
+}
+
+.card{
+  border: 1px solid #EEEEF0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2 ease;
+}
+
+.card:hover{
+transform: translateY(-2px);
+box-shadow:0 8px 24px rgba(0, 0, 0, 0.08);
+}
+button{
+  font-family: inherit;
+  transition: background-color 0.2s ease;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #C8102E;
+    outline-offset: 3px;
+}
+h2, h3{
+  letter-spacing: -0.4px;
+}
+p{
+  line-height:1.6;
+}
+
+/* welcome blahblah */
+
+.welcome-section{
+    background: linear-gradient(135deg, #C8102E, #8B0A20);
+    color: white;
+    padding: 30px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.welcome-section h2{
+    color: white;
+    margin: 8px 0;
+    font-size: 30px;
+}
+
+
+.layout{
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+}
+.sidebar{
+  min-height: calc(100vh - 100px);
+  height: auto;
+  flex-shrink: 0;
+}
+.content{
+  padding-top: 0;
+}
+page > h2:first-child{
+  margin-top: 0;
+}
+
+.sidebar nav button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+}
+
+.sidebar nav button svg {
+    width: 21px;
+    height: 21px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+.sidebar nav button.active{
+  background: rgba(255, 255, 255, 0.20);
+  font-weight: 600;
+}
+
+/* this is for the group member stuff */
+
+.members-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.members-header h3{
+    margin: 0;
+}
+
+.member-count{
+    font-size: 13px;
+    color: #888;
+}
+
+.member-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.member-row:last-child{
+    border-bottom: none;
+}
+
+.member-avatar{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FCE8EC;
+    color: #C8102E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.member-info{
+    flex: 1;
+    min-width: 0;
+}
+
+.member-info h4{
+    margin: 0;
+    font-size: 15px;
+}
+
+.member-info p{
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #888;
+}
+
+.member-status{
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.on-campus{
+    background: #E6F4EA;
+    color: #287A43;
+}
+
+.available{
+    background: #E6F4EA;
+    color: #287A43;
+}
+
+.in-class{
+    background: #F1F1F1;
+    color: #666;
+}
+
+/* campus feed */
+
+#statusInput{
+    width: 100%;
+    min-height: 95px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    margin: 12px 0;
+}
+
+.feed-heading{
+    margin-top: 35px;
+    font-size: 22px;
+}
+
+.feed-post{
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    margin-top: 18px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.feed-user{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.feed-avatar{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #FCE8EC;
+    color: #C8102E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.feed-user strong{
+    display: block;
+}
+
+.feed-time{
+    font-size: 12px;
+    color: #888;
+}
+
+.feed-photo{
+    display: block;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+.feed-post p{
+    line-height: 1.6;
+}
+
+.feed-empty{
+    color: #888;
+    padding: 20px 0;
+}
+
+/* auto activity wall */
+
+.activity-item{
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.activity-item:last-child{
+    border-bottom: none;
+}
+
+.activity-icon{
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #FCE8EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.activity-details{
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-details p{
+    margin: 0 0 6px;
+    font-size: 14px;
+}
+
+.activity-details small{
+    color: #888;
+    font-size: 12px;
+}
+
+.activity-photo{
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+/* code */
+
+#inviteQR {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+#inviteQR img,
+#inviteQR canvas {
+    border-radius: 8px;
+}
+
+#inviteCode {
+    color: #C8102E;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+/* on da top i think the other one just ignore idunno its okay */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+/* main header logo */
+
+.header-logo {
+    width: 120px;
+    height: 90px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+
+/* boxes w/friend status */
+.friends-status{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.friend-box{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px;
+    background: #f6f7fb;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+}
+
+.friend-avatar{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fce8ec;
+    color: #c8102e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.friend-info{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.friend-info strong{
+    font-size: 16px;
+}
+
+.friend-info span{
+    font-size: 13px;
+    color: #777;
+}
+
+.status{
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status.free{
+    background: #e6f4ea;
+    color: #287a43;
+}
+
+.status.busy{
+    background: #eeeeee;
+    color: #666666;
+}
+
+.status.away{
+    background: #fff3e0;
+    color: #9a5700;
+}
+
+/* make the clear activity button smaller */
+.clear-activity-btn{
+    padding: 6px 12px !important;
+    font-size: 12px;
+    border-radius: 7px;
+}
+/* just cause override possiblly*/
+#clearActivityBtn[hidden]{
+    display: none;
+}
+
+
+/* the header stuff */
+.header-brand{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-brand-text h2{
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #C8102E;
+    margin: 0;
+}
+
+.header-brand-text p{
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    color: #888;
+    margin: 4px 0 0;
+}
+
+/* do not change size */
+.header-brand .header-logo{
+    width: 120px;
+    height: 90px;
+    object-fit: contain;
+}
+
+/* this is for plans section */
+
+.plans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.plan-box{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px;
+    background: #f6f7fb;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+}
+
+.plan-icon{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fce8ec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.plan-info{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.plan-info strong{
+    font-size: 16px;
+}
+
+.plan-info span{
+    font-size: 13px;
+    color: #777;
 }
