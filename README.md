@@ -43,3 +43,9 @@ python3 -m pip install flask pg8000 python-dotenv
 and this to host:
 .venv\Scripts\python app.py
 
+
+do this to run the main on yours:
+git fetch origin
+git reset --hard origin/main
+.venv\Scripts\python app.py
+
