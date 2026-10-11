@@ -6,8 +6,7 @@ cd path\to\TESTONE
 git checkout main
 git pull
 
-HOW TO RUN:
-
+1) HOW TO RUN:
 install these...
 python -m venv .venv
 .venv\Scripts\python -m pip install flask pg8000 python-dotenv
@@ -17,11 +16,13 @@ FOR mac users......
 python3 -m venv .venv
 .venv/bin/python -m pip install flask pg8000 python-dotenv
 
-Create `.env`
-Make a file named `.env` in the TESTONE folder and paste the
-`DATABASE_URL=...` line Marc DMs you. **Never commit this file.**
+2) CREATE ENV:
+steps for env:
+open TESTONE folder in VS Code
+add new file and make it .env
+oven the env and copy this line! FROM DISCORD!
 
-## How to run
+3) How to run
 Windows:
 RUN THIS 
 .venv\Scripts\python app.py
