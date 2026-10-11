@@ -1,5 +1,11 @@
 # TESTONE
-Hackathon skeleton
+TECH STACK:
+
+Frontend: HTML, CSS, JavaScript
+Backend: Python + Flask
+Database: PostgreSQL (hosted on Tiger Data)
+Security: hashed passwords (Werkzeug)
+Tools: GitHub, VS Code
 
 to copy repoo:
 cd path\to\TESTONE
